@@ -1,0 +1,41 @@
+<html>
+    <head>
+        use client side javascript fetch post api call
+    </head>
+    <body>
+        <h3>posting person object</h3>
+        <script>
+            let data={
+"first_name": "Himank",
+"last_name": "Tyagi"
+};
+
+function postperson(){
+
+return fetch('http://localhost:5000/person1', {
+    method: "POST",
+    headers: {
+        'Content-type': 'application/json'
+    },
+    body:JSON.stringify(data)
+});
+}
+
+async function callpostperson()
+{
+   try{
+        const response =await postperson();
+        console.log(response);
+   }
+   catch(eror)
+   {
+    console.log('inside catch callback');
+    console.log(error);
+   }
+
+}
+
+callpostperson();
+        </script>
+    </body>
+</html>
