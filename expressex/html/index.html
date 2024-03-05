@@ -3,12 +3,15 @@
         use client side javascript fetch post api call
     </head>
     <body>
-        <h3>posting person object</h3>
+        <h3>posting person object {"first_name": "Himank",
+            "last_name": "Tyagi"}</h3>
+        <div id="response"></div>
         <script>
             let data={
 "first_name": "Himank",
 "last_name": "Tyagi"
 };
+
 
 function postperson(){
 
@@ -25,12 +28,23 @@ async function callpostperson()
 {
    try{
         const response =await postperson();
-        console.log(response);
+        // console.log(response);
+        // console.log(response.text);
+        console.log(response.statusText);
+         response.json().then((res)=>{
+            console.log(res);
+            document.getElementById('response').innerHTML=JSON.stringify(res);
+         })
+       
+
+        
    }
    catch(eror)
    {
     console.log('inside catch callback');
     console.log(error);
+    console.log(response.statusText);
+    document.getElementById('response').innerHTML=response.text;
    }
 
 }

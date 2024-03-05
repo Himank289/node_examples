@@ -3,17 +3,27 @@
         <title>Post Product Details Using Fetch API</title>
     </head>
     <body>
-        <h3>Hi All!</h3>
+        <h3>Hi All! ,post{'prodid':1,'prodname':'nodejs'} in text area</h3>
+        <label for="myTextarea"Enter User to be posted:</label> <br>
+
+            <textarea id="myTextarea" name="myTextarea" rows="8" cols="150">
+            </textarea> <br>
         <button onclick="postprod()">post product</button>
         <p id="resresult">show response result here!</p>
 
         <script>
+
+
             function postprod()
             {
+                
                 console.log('post product called..');
                 const url ="http://localhost:3000/product1";
 
-                const product = {prodid:1,prodname:'nodejs'};
+                // const product = {prodid:1,prodname:'nodejs'};
+               let product= document.getElementById('myTextarea').value;
+               product=product.trim();
+               console.log('product details inside fetch'+product);
 
                 // POST request using fetch()
                 fetch(url, 

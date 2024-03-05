@@ -43,7 +43,7 @@ app.post('/product1',(req,res)=>{
 
     console.log('product prodid:'+prod.prodid);
     console.log('product prod name:'+prod.prodname);
-    res.send('post product successful!');
+    res.send('post product successful!'+JSON.stringify(prod));
 })
 
 app.listen(3000);

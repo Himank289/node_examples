@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <script>
+             const deluser=()=>{
+            let id=prompt('enter id of user to be deleted');
+            id=id.trim();
+            console.log(id);
+            fetch('http://localhost:3000/users/'+id, { method: 'DELETE' })
+    .then(() => document.getElementById('deluser').innerHTML = 'Delete successful');
+        }
+        </script>
+       
+    </head>
+   <body>
+      
+      <form action = "/users" method = "post">
+         Id: <input type = "text" name = "id">  <br>
+          Name: <input type = "text" name = "name">  <br>
+          password: <input type = "text" name = "password">  <br>
+          profession: <input type = "text" name = "profession">  <br>
+         <input type = "submit" value = "Submit">
+      </form>
+      <hr>
+      <button onclick="deluser()">delete user</button>
+      <p id="deluser">delete user response</p>
+      
+   </body>
+</html>

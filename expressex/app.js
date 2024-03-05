@@ -5,10 +5,10 @@ var app = express();
 app.use(express.urlencoded({extended:'true'}));
 app.use(express.json());
 
-app.get('/', function (req, res) {
-   // res.send('Hello World');
-   res.sendFile(path.join(__dirname,'html','index.html'));
-})
+// app.get('/', function (req, res) {
+//    // res.send('Hello World');
+//    res.sendFile(path.join(__dirname,'html','index1.html'));
+// })
 
 
 app.get('/home', function (req, res) {
@@ -39,6 +39,11 @@ app.get('/home', function (req, res) {
     console.log(p);
     res.end(JSON.stringify(p));
  })
+
+ app.get('/person1', function (req, res) {
+   // res.send('Hello World');
+   res.sendFile(path.join(__dirname,'html','index1.html'));
+})
 
  app.post('/person1',(req,res)=>{
     console.log(req.method);
