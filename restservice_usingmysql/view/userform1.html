@@ -1,0 +1,93 @@
+<html>
+<head>
+    <script>
+        const delUser = (id) => {
+            fetch('http://localhost:3000/users/' + id, { method: 'DELETE' })
+                .then(() => document.getElementById('deluser').innerHTML = 'Delete successful');
+                window.location.reload(); 
+        }
+
+        const updateUserForm = (id, name, password, profession) => {
+            document.getElementById('updateuser').style.display = 'inline';
+            document.getElementsByName('id')[1].value = id;
+            document.getElementsByName('name')[1].value = name;
+            document.getElementsByName('password')[1].value = password;
+            document.getElementsByName('profession')[1].value = profession;
+        }
+
+        const updateUser = () => {
+            let id = document.getElementsByName('id')[1].value;
+            let name = document.getElementsByName('name')[1].value;
+            let password = document.getElementsByName('password')[1].value;
+            let profession = document.getElementsByName('profession')[1].value;
+
+            let user = { 'id': id, "name": name, "password": password, 'profession': profession };
+            fetch('http://localhost:3000/users/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            })
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById('updateuser1').innerHTML = 'Update successful';
+                    window.location.reload(); 
+                });
+        }
+    </script>
+</head>
+<body>
+   <form action = "/users" method = "post">
+         Id: <input type = "text" name = "id">  <br>
+          Name: <input type = "text" name = "name">  <br>
+          password: <input type = "text" name = "password">  <br>
+          profession: <input type = "text" name = "profession">  <br>
+         <input type = "submit" value = "Submit">
+      </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Password</th>
+                <th>Profession</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+        </tbody>
+    </table>
+    <hr>
+    <div id="deluser">Delete user response</div>
+    <div id="updateuser" style="display: none;">
+        <input type="text" name="id" style="display: none;"><br>
+        Name: <input type="text" name="name"><br>
+        Password: <input type="text" name="password"><br>
+        Profession: <input type="text" name="profession"><br>
+        <button onclick="updateUser()">Update User</button>
+    </div>
+    <p id="updateuser1"> update user response</p>
+
+    <script>
+        // Fetching all users from mydb3 and initialisng the table with initial values
+        fetch('http://localhost:3000/users')
+            .then(response => response.json())
+            .then(data => {
+                const userTable = document.getElementById('userTable');
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.password}</td>
+                        <td>${user.profession}</td>
+                        <td>
+                            <button onclick="delUser(${user.id})">Delete</button>
+                            <button onclick="updateUserForm(${user.id}, '${user.name}', '${user.password}', '${user.profession}')">Update</button>
+                        </td>
+                    `;
+                    userTable.appendChild(row);
+                });
+            });
+    </script>
+</body>
+</html>

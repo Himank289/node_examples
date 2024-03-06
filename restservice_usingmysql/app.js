@@ -51,7 +51,7 @@ app.get('/users/:id',(req,res)=>{
 })
 
 app.get('/userform',(req,res)=>{
-    res.sendFile(path.join(__dirname,'view','userform.html'));
+    res.sendFile(path.join(__dirname,'view','userform1.html'));
 })
 
 app.post('/users',(req,res)=>{
@@ -71,7 +71,9 @@ app.post('/users',(req,res)=>{
             res.status(400).send('<h3>http post user failed <br/> sql error,'+err.message+'</h3>');
         }
         else{
-            res.status(200).send('<h3>http post sucessful</h3>');
+            // res.status(200).send('<h3>http post sucessful</h3>');
+            res.redirect('/userform');
+
         }
 
     })
@@ -93,6 +95,31 @@ app.delete('/users/:id',(req,res)=>{
         }
 
     })
+})
+
+app.put('/users/:id',(req,res)=>{
+    const id=req.params.id;
+    console.log('update user with id'+id);
+
+    const u=req.body;
+    console.log(u);
+
+    const name=u.name;
+    const password=u.password;
+    const profession=u.profession;
+
+    const sql='update user set name=?,password=?,profession=? where id=?';
+    dbcon.query(sql, [name,password,profession,id], function (err, result) {
+        if (err) {
+           console.log(err.message);
+        res.sendStatus(400).send('<p>Error updating User sql eror '+err.message+'</h3>');
+           
+        } else {
+        //    res.status(200).send('<h3> update user suscessful</h3>')
+        res.redirect('/users');
+           }
+       });
+
 })
 
 app.listen(3000,(req,res)=>{

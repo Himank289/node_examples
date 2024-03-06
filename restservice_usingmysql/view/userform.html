@@ -8,6 +8,34 @@
             fetch('http://localhost:3000/users/'+id, { method: 'DELETE' })
     .then(() => document.getElementById('deluser').innerHTML = 'Delete successful');
         }
+
+        const updateUserForm=()=>{
+         document.getElementById('updateuser').style.display='inline';
+        }
+
+        const updateUser=()=>{
+            
+            let id=document.getElementsByName('id')[1].value;
+            let name=document.getElementsByName('name')[1].value;
+            let password=document.getElementsByName('password')[1].value;
+            let profession=document.getElementsByName('profession')[1].value;
+
+            let user={'id':id,"name":name,"password":password,'profession':profession};
+            alert(id+','+name+','+password+','+profession);
+            fetch('http://localhost:3000/users/'+id,
+            {
+               method:'PUT',
+               headers: { 'Content-Type': 'application/json' },
+               body:JSON.stringify(user)
+            })
+            .then((response)=>{
+               console.log(response);
+               document.getElementById('updateuser1').innerHTML='update sucessful';
+
+            });
+
+        }
+        
         </script>
        
     </head>
@@ -23,6 +51,20 @@
       <hr>
       <button onclick="deluser()">delete user</button>
       <p id="deluser">delete user response</p>
+
+      <button onclick="updateUserForm()">update user</button><br>
+         <div id="updateuser">
+         Id: <input type = "text" name = "id">  <br>
+          Name: <input type = "text" name = "name">  <br>
+          password: <input type = "text" name = "password">  <br>
+          profession: <input type = "text" name = "profession">  <br>
+        
+          <button onclick="updateUser()">update user</button>
+         </div>
+         <p id="updateuser1"> update user response</p>
+      <script>
+         document.getElementById('updateuser').style.display='none';
+      </script>
       
    </body>
 </html>
