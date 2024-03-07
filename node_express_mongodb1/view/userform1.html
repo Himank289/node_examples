@@ -1,0 +1,177 @@
+<html>
+   <head>
+   <script>
+ 
+const listusers = (users)=>{
+   let table = document.getElementById('table');
+ 
+   for (let user of users) {
+  let tr = document.createElement('tr');
+ 
+  let td1 = document.createElement('td');
+  td1.textContent = user.id;
+  tr.appendChild(td1);
+ 
+  let td2 = document.createElement('td');
+  td2.textContent = user.name;
+  tr.appendChild(td2);
+ 
+  let td3 = document.createElement('td');
+  td3.textContent = user.password;
+  tr.appendChild(td3);
+ 
+    let td4 = document.createElement('td');
+  td4.textContent = user.profession;
+  tr.appendChild(td4);
+ 
+    let td5 = document.createElement('td');
+  td5.innerHTML = "<button onclick=deluser("+ user.id +")>Delete</button>"
+  tr.appendChild(td5);
+ 
+    let td6 = document.createElement('td');
+    td6.innerHTML = "<button onclick=updateuser("+ user.id+ ")>Update</button>"
+  tr.appendChild(td6);
+ 
+  table.appendChild(tr);
+ }
+}
+     const getuserbyid = (id)=>{
+     
+        return fetch('http://localhost:3000/users/'+id)
+        .then(response => response.json());
+       
+     }
+     
+      const deluser = (id)=>{
+ 
+         
+          console.log(id);
+         
+          fetch('http://localhost:3000/users/'+id, { method: 'DELETE' })
+         .then(
+            () =>
+             {
+              console.log('Delete successful');
+              location.reload();
+         
+             });
+           
+      }
+ 
+   
+ 
+      const updateuser = (id)=>{
+        alert('update user called'+id);
+       console.log(id);
+       let user=undefined;
+       getuserbyid(id)
+       .then(data => {
+        console.log(data);
+        if(data.length>0)
+         user = data[0];
+         console.log(user);    
+         updateform(user);
+        } );
+         
+      }
+ 
+      const updateform =(user)=>{
+        let form= document.getElementById('updateuserform');
+        let br = document.createElement('br');
+        let input1 = document.createElement('input');
+         input1.id='input1';
+         input1.name = 'id';
+           input1.disabled = true;
+           input1.value = user.id;
+           input1.placeholder = 'user id';
+       form.appendChild(input1);
+         form.appendChild(br);
+         let input2 = document.createElement('input');
+         input2.name = 'name';
+           input2.value = user.name;
+           input2.placeholder = 'user name';
+       form.appendChild(input2);
+         form.appendChild(br);
+         let input3 = document.createElement('input');
+         input3.name = 'password';
+         input3.value = user.password;
+         input3.placeholder = 'user password';
+       form.appendChild(input3);
+       form.appendChild(br);
+       let input4 = document.createElement('input');
+       input4.name = 'profession';
+       input4.value = user.profession;
+       input4.placeholder = 'user profession';
+       form.appendChild(input4);
+       form.appendChild(br);
+     
+        let button = document.createElement('button');
+          button.id = 'bu1';
+          button.textContent='update user';
+         form.appendChild(button);
+ 
+         let ele = document.getElementById('bu1');
+        ele.addEventListener('click',()=>{updateuser1(input1.value,input2.value,input3.value,input4.value)});
+ 
+      }
+       
+      const updateuser1 = (id,name,password,profession)=>{
+       
+        console.log('inside update user1');
+   
+        let user1 = {'id':id,'name':name,'password':password,'profession':profession};
+ 
+        console.log(id+','+name+','+password+','+profession);
+       
+        fetch('http://localhost:3000/users/'+user1.id,
+               {
+                 method: 'PUT' ,
+                 headers: {'Content-Type':'application/json'},
+                 body:JSON.stringify(user1)
+                }
+              )
+        .then((response) => {
+                console.log(response);
+                console.log('Update successful');
+                location.reload();
+            });
+       
+      }
+   
+    </script>
+   </head>
+   <body>
+     
+      <form action = "/users" method = "post">
+         id: <input type = "text" name = "id">  <br>
+         name: <input type = "text" name = "name">  <br>
+         password:<input type = "text" name = "password">  <br>
+         profession:<input type = "text" name = "profession">  <br>
+         <input type = "submit" value = "Submit">
+      </form>
+      <hr>
+     
+ 
+ 
+      <table id="table"></table>
+ 
+      <form id="updateuserform" onsubmit="return false;"></form>
+         
+     
+      <script>
+ 
+        let users = [];
+        fetch('http://localhost:3000/users')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); users=data;  
+            listusers(users);
+       
+        } );
+   
+       
+ 
+     
+      </script>
+   </body>
+</html>
